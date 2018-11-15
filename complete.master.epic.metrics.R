@@ -1,4 +1,16 @@
+#' Computing transmission network characteristics: age mixing patterns, time trend incidence, and 
+#' onward transmission distribution
 
+#' @param datalist.agemix Data list of simpact output produced by \code{\link{readthedata()}}
+
+#' @export
+
+
+# The outputs of the function are:
+
+# - temporal trend of incidence
+# - age mixing statistics
+# - mean, median, and standard deviation of onward transmissions
 
 
 
