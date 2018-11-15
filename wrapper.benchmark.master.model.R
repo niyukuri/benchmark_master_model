@@ -1,4 +1,5 @@
-
+# Wrapper function which source all others and the main computatinal complete.master.epic.metric.class.phylo.features.cov script 
+# which is the master model
 
 # Define directory
 
@@ -16,46 +17,11 @@ setwd(paste0(work.dir))
 pacman::p_load(snow, parallel, RSimpactCyan, RSimpactHelper, ape, Rsamtools)
 
 
-# work.dir <- "~/Desktop/calibration/"
-
-
-
-
-
 wrapper.benchmark.master.model <- function(inputvector = inputvector){
   
   
-  # 
-  # source("/home/niyukuri/Dropbox/25.10.2018.age.mix2/editings_benchmark_master_model_13_11_2018/advanced.transmission.network.builder.R")
-  # 
-  # # source("/home/niyukuri/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/ALL.funs.R")
-  # 
-  # source("/home/niyukuri/Dropbox/25.10.2018.age.mix2/editings_benchmark_master_model_13_11_2018/needed.functions.RSimpactHelp.R")
-  # 
-  # source("/home/niyukuri/Dropbox/25.10.2018.age.mix2/editings_benchmark_master_model_13_11_2018/complete.master.epic.metrics.R")
-  # 
-  # source("/home/niyukuri/Dropbox/25.10.2018.age.mix2/editings_benchmark_master_model_13_11_2018/compute.summary.statistics.classic.R")
-  # 
-  # # source("~/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/mixed.effect.fit.transmission.clusters.R")
-  # #
-  # # source("~/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/stats.age.groups.trans.clust.network.fun.R")
-  # 
-  # source("/home/niyukuri/Dropbox/25.10.2018.age.mix2/editings_benchmark_master_model_13_11_2018/compute.summary.statistics.phylo.MCAR.R")
-  # 
-  # source("/home/niyukuri/Dropbox/25.10.2018.age.mix2/editings_benchmark_master_model_13_11_2018/compute.summary.statistics.phylo.MAR.R")
-  # 
-  # 
-  # source("/home/niyukuri/Dropbox/25.10.2018.age.mix2/editings_benchmark_master_model_13_11_2018/complete.master.epic.metric.class.phylo.features.cov.R")
-  # 
-  
-  # 
-
-  
-  
   work.dir <- "/home/dniyukuri/lustre/benchmark_master_model" # on CHPC
-  
-  
-  
+
   # work.dir <- "/home/niyukuri/Desktop/mastermodeltest" # on laptop
   
   
