@@ -1,25 +1,8 @@
+# Master model which simulates the epidemic and the summary statistics in different scenarios
 
 complete.master.epic.metric.class.phylo.features.cov <- function(inputvector = inputvector){
   
-  # source("/home/niyukuri/phylosimpact_simulation_studies_2018/age_mix_final/advanced.transmission.network.builder.R")
-  
-  # source("/home/niyukuri/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/ALL.funs.R")
-  
-  # source("~/phylosimpact_simulation_studies_2018/stress_testing/needed.functions.RSimpactHelp.R")
-  
-  # source("~/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/complete.master.epic.metrics.R")
-  
-  # source("/home/niyukuri/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/compute.summary.statistics.classic.R")
-  
-  # source("~/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/mixed.effect.fit.transmission.clusters.R")
-  # 
-  # source("~/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/stats.age.groups.trans.clust.network.fun.R")
-  
-  # source("/home/niyukuri/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/compute.summary.statistics.phylo.MCAR.R")
-  
-  # source("/home/niyukuri/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/compute.summary.statistics.phylo.MAR.R")
-  
-  
+
   source("/home/dniyukuri/lustre/benchmark_master_model/advanced.transmission.network.builder.R")
   
   source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
