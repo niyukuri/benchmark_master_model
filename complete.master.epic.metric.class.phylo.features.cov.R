@@ -1,5 +1,25 @@
 # Master model which simulates the epidemic and the summary statistics in different scenarios
 
+# The output is a vector of values of
+
+# 1. Transmission network characteristics 
+
+# - temporal trend of incidence
+# - age mixing statistics
+# - mean, median, and standard deviation of onward transmissions
+
+# 2. Epidmiological, demographical, sexual behavioural, and interventions realted summary statistics
+
+# 3. Phylogenetic summary statistics in MCAR and MA (35:95, by 5) scenarios (13 * 4), each scenario returns measurements which are describbed
+# in compute.summary.statistics.phylo.MAR and compute.summary.statistics.phylo.MCAR scripts):
+
+# Missing Completly at Random has 13 scenarios
+# Missing At Random has 39 scenarios, with 13 when we assume we have more women in the sample (seq.gender.ratio = 70%)
+# the second we have fewer women (seq.gender.ratio = 30%), and the third we have same amount of men and women (seq.gender.ratio = 50%)
+
+
+
+
 complete.master.epic.metric.class.phylo.features.cov <- function(inputvector = inputvector){
   
 
