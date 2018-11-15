@@ -1,4 +1,51 @@
+#' Computing epidmiological, demographical, sexual behavioural, and interventions realted summary statistics
+#'
 
+#' @param datalist.agemix Data list of simpact output produced by \code{\link{readthedata()}}
+#' @param timewindow Time window in which the experience is carried out
+
+#' @export
+
+
+# The outputs of the function are:
+
+# (i) Demographic
+# - Population growth
+
+# (ii) Epidemic
+
+# - Prevalence
+# - Incidence
+
+# (iii) Sexual behaviour
+
+# - point prevalence of conurrent relationships
+# - relationship per person per year
+# - mean, median and standard deviation of age gap
+
+
+# (iv) Interventions
+
+# - ART coverage
+# - Viral load suppression
+
+
+# "Pop.growthrate", 
+# 
+# "prev.15.25.men", "prev.15.25.women", 
+# "prev.25.40.men", "prev.25.40.women", 
+# "prev.40.50.men", "prev.40.50.women", 
+# 
+# "incid.15.24.men", "incid.15.24.women", 
+# "incid.25.39.men", "incid.25.39.women", 
+# "incid.40.49.men", "incid.40.49.women",
+# 
+# "pp.cp.6months.male.rels",
+# 
+# "relsperpersonperyear", 
+# "agegap.mean", "agegap.med", "agegap.sd", 
+# 
+# "ART.cov.vector", "VL.suppression.fraction"
 
 
 
