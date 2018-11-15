@@ -1,3 +1,59 @@
+#' Computing phylogenetic realted summary statistics
+#'
+#' @param simpact.trans.net Transmission network and record produced by \code{\link{advanced.transmission.network.builder()}}
+#' @param datalist.agemix Data list of simpact output produced by \code{\link{readthedata()}}
+#' @param work.dir Working directory
+#' @param dirfasttree Directory where fastTree soaftware is called from
+#' @param sub.dir.rename Sub-directory where simpact output are stored
+#' @param limitTransmEvents Consider a transmission network which counts individuals more than the value (numeric)
+#' @param seq.cov Sequence coverage
+#' @param seq.gender.ratio Proportion of women in the selected population (women/(women + men))
+#' @param age.group.15.25 Consider individuals with age greater than 15 and less than 25
+#' @param age.group.25.40 Consider individuals with age greater than 25 and less than 40
+#' @param age.group.40.50 Consider individuals with age greater than 40 and less than 50
+#' @param endpoint Only transmission events that took place before this point in simulation time, are captured in the transmission network
+#' @param timewindow Time window in which the experience is carried out
+#' @param cut.off Cut off value for constructing pairings based on tMRCA
+#' @export
+
+
+# The outputs of the function are:
+
+# (i) Internal node statistics
+# - parameters of Poisson regression for internal nodes
+
+# (ii) Linear Mixed Effect model for predicting age in transmission clusters
+# - parameters of LMEM 
+
+# (iii) Cluster size statistics: number, mean, median, and standard deviation
+
+# (iv) Topological summary statistics of a phylogenetic tree
+
+# (v) Age mixing measurements from transmission clusters
+
+# - table of proportion of men in a give age group who are paired to women of a given age group
+# - table of proportion of women in a give age group who are paired to men of a given age group
+
+
+# ------------------------------------------
+
+# "node.interc.fit",
+# "node.slope.fit",
+# 
+# "ME.cl.av.age.male",  "ME.cl.gendEffect", "ME.cl.between.transm.var", "ME.cl.within.transm.var",  "ME.cl.SD.female",          
+# "ME.cl.SD.male", 
+
+# "Num.Clusters",  "av.Clust.Size",   "mean.Num.Clus",  "med.Num.Clus",   "SD.Num.Clus" ,
+
+# "meanHeight",  "colless",  "sackin", "mean.tipsDepths", "mean.nodesDepths", "maxHeight",  
+
+# "cl.prop.men15.25.F.15.25",   "cl.prop.men25.40.F.15.25",
+# "cl.prop.men40.50.F.15.25", "cl.prop.men15.25.F.25.40",   "cl.prop.men25.40.F.25.40",   "cl.prop.men40.50.F.25.40",  
+# "cl.prop.men15.25.F.40.50" ,  "cl.prop.men25.40.F.40.50" , "cl.prop.men40.50.F.40.50",   
+
+# "cl.prop.women15.25.M.15.25", 
+# "cl.prop.women25.40.M.15.25", "cl.prop.women40.50.M.15.25" ,"cl.prop.women15.25.M.25.40", "cl.prop.women25.40.M.25.40", 
+# "cl.prop.women40.50.M.25.40", "cl.prop.women15.25.M.40.50", "cl.prop.women25.40.M.40.50", "cl.prop.women40.50.M.40.50"
 
 
 compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.trans.net,
