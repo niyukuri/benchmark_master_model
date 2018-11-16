@@ -82,8 +82,8 @@ complete.master.epic.metric.class.phylo.features.cov <- function(inputvector = i
   #
   cfg.list <- input.params.creator(population.eyecap.fraction = 0.2,
                                    population.simtime = 40, 
-                                   population.nummen = 8000, 
-                                   population.numwomen = 8000,
+                                   population.nummen = 5000, 
+                                   population.numwomen = 5000,
                                    hivseed.time = 10, 
                                    hivseed.type = "amount",
                                    hivseed.amount = 40, 
