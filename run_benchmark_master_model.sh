@@ -4,7 +4,7 @@
 #PBS -P CBBI0949
 #PBS -q smp
 #PBS -l select=1:ncpus=24:mpiprocs=24:nodetype=haswell_reg
-#PBS -l walltime=24:00:00
+#PBS -l walltime=48:00:00
 #PBS -m be
 #PBS -M niyukuri@aims.ac.za
 
