@@ -1,13 +1,13 @@
 #!/bin/bash -l
 #
 #PBS -N benchmarkMM
-#PBS -P CBBI0949
-#PBS -q smp
-#PBS -l select=1:ncpus=24:mpiprocs=24:nodetype=haswell_reg
+#PBS -P CBBI1106
+#PBS -q bigmem
+#PBS -l select=1:ncpus=56:mpiprocs=56:nodetype=haswell_fat
+#PBS -W group_list=bigmemq
 #PBS -l walltime=48:00:00
 #PBS -m be
 #PBS -M niyukuri@aims.ac.za
-
 
 
 ulimit -s unlimited
