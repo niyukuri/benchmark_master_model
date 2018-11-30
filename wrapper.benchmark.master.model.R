@@ -78,7 +78,7 @@ return(results.f)
 
 
 
-reps <- 24
+reps <- 56
 
 
 
@@ -92,7 +92,7 @@ inputmatrix <- matrix(rep(inputvector, reps), byrow = TRUE, nrow = reps)
 epi.mm.stats <- simpact.parallel(model = wrapper.benchmark.master.model,
                                  actual.input.matrix = inputmatrix,
                                  seed_count = 1,
-                                 n_cluster = 24)
+                                 n_cluster = 56)
 
 write.csv(epi.mm.stats, file = "Results.benchmark.epi.mm.stats.csv")
 
