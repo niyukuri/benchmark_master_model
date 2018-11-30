@@ -72,10 +72,11 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
                                                  cut.off = 7){
   
   
+  
   # source("~/phylosimpact_simulation_studies_2018/stress_testing/needed.functions.RSimpactHelp.R")
-
+  
   source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
-
+  
   
   dirseqgen <- work.dir
   
@@ -85,12 +86,12 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
   
   
   mAr.IDs <- IDs.Seq.Age.Groups(simpact.trans.net = simpact.trans.net,
-                                limitTransmEvents = limitTransmEvents, 
-                                timewindow = timewindow, 
+                                limitTransmEvents = limitTransmEvents,
+                                timewindow = timewindow,
                                 seq.cov = seq.cov,
-                                seq.gender.ratio = seq.gender.ratio, 
+                                seq.gender.ratio = seq.gender.ratio,
                                 age.group.15.25 = age.group.15.25,
-                                age.group.25.40 = age.group.25.40, 
+                                age.group.25.40 = age.group.25.40,
                                 age.group.40.50 = age.group.40.50)
   
   # nrow(agemixing.df.IDs) > length(unique(agemixing.df.IDs$parent)) & length(unique(agemixing.df.IDs$parent)) > 1 
@@ -111,7 +112,7 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
                                                          sub.dir.rename = sub.dir.rename,
                                                          fasttree.tool = "FastTreeMP",
                                                          calendar.dates = "samplingtimes.all.csv",
-                                                         simseqfile = paste0("cov.",seq.cov, ".mAr.IDs.C.Epidemic.Fasta"), # paste0("cov.",seq.cov,".", seq.gender.ratio, ".mAr.IDs.C.Epidemic.Fasta")
+                                                         simseqfile = paste0("cov.",seq.cov, ".mAr.IDs.C.Epidemic.Fasta"),
                                                          count.start = 1977,
                                                          endsim = endpoint,
                                                          clust = TRUE)
@@ -123,6 +124,7 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     int.node.age <- N$Ti
     
     latest.samp <- N$timeToMRCA+N$timeOfMRCA # latest sampling date
+    
     
     
     # Fitting internal nodes: Poisson regression
@@ -158,9 +160,9 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     
     slope.fit <- output$coefficients[[2]]
     
-    
     names(intercept.fit) <-     "node.interc.fit"
     names(slope.fit) <- "node.slope.fit"
+    
     
     
     mrca.v <- mrca(mAr.IDs.tree.calib, full = FALSE) # MRCA ids
@@ -187,8 +189,6 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     
     
     # source("~/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/mixed.effect.fit.transmission.clusters.R")
-    
-
     
     mixed.effect.fit.transmission.clusters <- function(clust.names=clust.names,
                                                        simpact.trans.net = simpact.trans.net,
@@ -397,10 +397,12 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     # source("~/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/stats.age.groups.trans.clust.network.fun.R")
     
     
+    
+    
+    
+    
     stats.age.groups.trans.clust.network.fun <- function(simpact.trans.net = simpact.trans.net.adv, 
                                                          datalist.agemix = datalist.agemix,
-                                                         work.dir = work.dir,  
-                                                         dirfasttree = dirfasttree, 
                                                          sub.dir.rename = sub.dir.rename,
                                                          limitTransmEvents = 7,
                                                          timewindow = c(30,40),
@@ -409,24 +411,27 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
                                                          age.group.15.25 = c(15,25),
                                                          age.group.25.40 = c(25,40),
                                                          age.group.40.50 = c(40,50),
-                                                         cut.off = 7){
+                                                         cut.off = 7,
+                                                         clust.names=dd,
+                                                         mAr.IDs.tree.calib = mAr.IDs.tree.calib){
       
       
       
       
-      # source("~/phylosimpact_simulation_studies_2018/stress_testing/needed.functions.RSimpactHelp.R")
+      source("~/phylosimpact_simulation_studies_2018/stress_testing/needed.functions.RSimpactHelp.R")
       
-      source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
+      
+      # source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
       
       
       # Data list of infected individuals
       
       
       
-      mCAr.IDs <- select.IDs
+      mAr.IDs <- select.IDs
       
       
-      if(length(mCAr.IDs) >= 10){
+      if(length(mAr.IDs) >= 10){
         
         
         simpact.trans.net.adv <- simpact.trans.net
@@ -463,7 +468,7 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
         table.simpact.trans.net.adv <- infecttable # rbindlist(simpact.trans.net.adv)
         
         
-        Study.DataTable <- dplyr::filter(table.simpact.trans.net.adv, table.simpact.trans.net.adv$id.lab%in%mCAr.IDs) 
+        Study.DataTable <- dplyr::filter(table.simpact.trans.net.adv, table.simpact.trans.net.adv$id.lab%in%mAr.IDs) 
         
         
         IDs.study <- Study.DataTable$RecId
@@ -472,76 +477,16 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
         transm.datalist.agemix <- datalist.agemix # assign full data set new age mix data set
         
         # Transmission table of selected individuals
-        table.simpact.trans.net.cov <- dplyr::filter(table.simpact.trans.net.adv, table.simpact.trans.net.adv$id.lab%in%mCAr.IDs)
+        table.simpact.trans.net.cov <- dplyr::filter(table.simpact.trans.net.adv, table.simpact.trans.net.adv$id.lab%in%mAr.IDs)
         
         # Person table of selected individuals
         transm.datalist.agemix$ptable <- dplyr::filter(transm.datalist.agemix$ptable, transm.datalist.agemix$ptable$ID%in%IDs.study)
         
         
         
-        dirfasttree <- work.dir
-        
-        
-        
-        # Select sequences from the pool of alignment
-        ##############################################
-        
-        
-        choose.sequence.ind(pool.seq.file = paste0(sub.dir.rename,"/C.Epidemic.fas"),
-                            select.vec = mCAr.IDs,
-                            name.file = paste0(sub.dir.rename,"/",paste0("cov.",seq.cov, ".mCAr.IDs.C.Epidemic.Fasta")))
-        
-        
-        # Build and calibrate the phylogenetic tree
-        ############################################
-        
-        mCAr.IDs.tree.calib <- phylogenetic.tree.fasttree.par(dir.tree = dirfasttree,
-                                                              sub.dir.rename = sub.dir.rename,
-                                                              fasttree.tool = "FastTreeMP",
-                                                              calendar.dates = "samplingtimes.all.csv",
-                                                              simseqfile = paste0("cov.",seq.cov, ".mCAr.IDs.C.Epidemic.Fasta"),
-                                                              count.start = 1977,
-                                                              endsim = 40,
-                                                              clust = TRUE)
-        
-        
-        
-        N <- node.age(mCAr.IDs.tree.calib)
-        
-        # Time to MRCA: internal nodes ages
-        
-        int.node.age <- N$Ti
-        
-        
-        latest.samp <- N$timeToMRCA+N$timeOfMRCA # latest sampling date
-        
-        
-        mrca.v <- mrca(mCAr.IDs.tree.calib, full = FALSE) # MRCA ids
-        
-        
-        sampling.dates <- read.csv(paste0(sub.dir.rename,"/samplingtimes.all.csv")) # sampling times
-        
-        # 
-        # tree.cal.cov.35.IDs <- read.tree(paste0(sub.dir.rename, paste0("/calibrated.tree.cov.",seq.cov, ".mCAr.IDs.C.Epidemic.Fasta.tree")))
-        # 
-        
-        
-        # Compute transmission clusters
-        ###############################
-        
-        # run ClusterPicker
-        
-        system(paste("java -jar ", paste(paste0(work.dir,"/ClusterPicker_1.2.3.jar"), paste0(sub.dir.rename,"/", paste0("cov.",seq.cov, ".mCAr.IDs.C.Epidemic.Fasta")), paste0(sub.dir.rename,"/",paste0("cov.",seq.cov, ".mCAr.IDs.C.Epidemic.Fasta.nwk")),  paste0("0.9 0.9 0.045 2 gap"))))
-        
-        # Read clusters' files
-        
-        dd <- list.files(path = paste0(sub.dir.rename), pattern = paste0(paste0("cov.",seq.cov, ".mCAr.IDs.C.Epidemic.Fasta"),"_",paste0("cov.",seq.cov, ".mCAr.IDs.C.Epidemic.Fasta"),"_","clusterPicks_cluste"),
-                         all.files = FALSE,
-                         full.names = FALSE, recursive = FALSE)
-        
         # Transmission clusters.
         
-        d <- clust.names <- dd
+        d <- clust.names
         
         data.list.simpact.trans.net.adv <-  vector("list", length(d)) # list() # initialise gender and age-structured data table of pairings in each transission cluster
         
@@ -583,7 +528,7 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
         
         ## Aligning internal nodes IDs and their age: !they must get same length
         
-        ancestor <- Ancestors(mCAr.IDs.tree.calib) # ancestors of each tips and internal node
+        ancestor <- Ancestors(mAr.IDs.tree.calib) # ancestors of each tips and internal node
         # All ancestors output are internal nodes
         
         ancestor.v <- vector()
@@ -1675,10 +1620,9 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     }
     
     
+    
     stats.AG <- stats.age.groups.trans.clust.network.fun(simpact.trans.net = simpact.trans.net, 
                                                          datalist.agemix = datalist.agemix,
-                                                         work.dir = work.dir,  
-                                                         dirfasttree = dirfasttree, 
                                                          sub.dir.rename = sub.dir.rename,
                                                          limitTransmEvents = limitTransmEvents,
                                                          timewindow = timewindow,
@@ -1687,7 +1631,9 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
                                                          age.group.15.25 = age.group.15.25,
                                                          age.group.25.40 = age.group.25.40,
                                                          age.group.40.50 = age.group.40.50,
-                                                         cut.off = cut.off)
+                                                         cut.off = cut.off,
+                                                         clust.names=dd,
+                                                         mAr.IDs.tree.calib = mAr.IDs.tree.calib)
     
     
     # library(phytools)
@@ -1749,7 +1695,6 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     
     names(phylo.features.summary) <- features.names
     
-    
     clust.phylo.fit.params <- c(intercept.fit,
                                 slope.fit,
                                 
@@ -1766,12 +1711,16 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
                                        "node.slope.fit",
                                        
                                        "ME.cl.av.age.male",  "ME.cl.gendEffect", "ME.cl.between.transm.var", "ME.cl.within.transm.var",  "ME.cl.SD.female",          
-                                       "ME.cl.SD.male", "Num.Clusters",  "av.Clust.Size",   "mean.Num.Clus",  "med.Num.Clus",   "SD.Num.Clus" , "meanHeight",
-                                       "colless",  "sackin", "mean.tipsDepths", "mean.nodesDepths", "maxHeight",  "cl.prop.men15.25.F.15.25",   "cl.prop.men25.40.F.15.25",
-                                       "cl.prop.men40.50.F.15.25", "cl.prop.men15.25.F.25.40",   "cl.prop.men25.40.F.25.40",   "cl.prop.men40.50.F.25.40",  
-                                       "cl.prop.men15.25.F.40.50" ,  "cl.prop.men25.40.F.40.50" , "cl.prop.men40.50.F.40.50",   "cl.prop.women15.25.M.15.25", 
-                                       "cl.prop.women25.40.M.15.25", "cl.prop.women40.50.M.15.25" ,"cl.prop.women15.25.M.25.40", "cl.prop.women25.40.M.25.40", 
-                                       "cl.prop.women40.50.M.25.40", "cl.prop.women15.25.M.40.50", "cl.prop.women25.40.M.40.50", "cl.prop.women40.50.M.40.50")
+                                       "ME.cl.SD.male", 
+                                       
+                                       "Num.Clusters",  "av.Clust.Size",   "mean.Num.Clus",  "med.Num.Clus",   "SD.Num.Clus" , 
+                                       "meanHeight",  "colless",  "sackin", "mean.tipsDepths", "mean.nodesDepths", "maxHeight",  
+                                       
+                                       "cl.prop.men15.25.F.15.25",   "cl.prop.men25.40.F.15.25", "cl.prop.men40.50.F.15.25", "cl.prop.men15.25.F.25.40",   
+                                       "cl.prop.men25.40.F.25.40",   "cl.prop.men40.50.F.25.40",  "cl.prop.men15.25.F.40.50" ,  "cl.prop.men25.40.F.40.50" , 
+                                       "cl.prop.men40.50.F.40.50",   "cl.prop.women15.25.M.15.25", "cl.prop.women25.40.M.15.25", "cl.prop.women40.50.M.15.25",
+                                       "cl.prop.women15.25.M.25.40", "cl.prop.women25.40.M.25.40", "cl.prop.women40.50.M.25.40", "cl.prop.women15.25.M.40.50", 
+                                       "cl.prop.women25.40.M.40.50", "cl.prop.women40.50.M.40.50")
     
     
     
