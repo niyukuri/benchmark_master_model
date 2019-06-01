@@ -16,10 +16,11 @@
 
 complete.master.epic.metrics <- function(datalist = datalist.agemix){
   
-  # source("~/phylosimpact_simulation_studies_2018/stress_testing/needed.functions.RSimpactHelp.R")
   
   source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
 
+  # source("/home/david/benchmark_master_model/needed.functions.RSimpactHelp.R")
+  
   
   datalist.agemix <- datalist
   
@@ -371,18 +372,22 @@ complete.master.epic.metrics <- function(datalist = datalist.agemix){
   
   
 
-  # 3. Onward transmissions #
+  # 3. Onward transmissions # starting ART interventions time
   ###########################
   
   transm.count <- onwardtransmissions.dat(datalist = datalist.agemix, 
-                                          trans.network = simpact.trans.net)
+                                          trans.network = simpact.trans.net,
+                                          time.window=c(33, 40))
+  
+  
+  
   
   METRICS.transm.average <- mean(transm.count)
   
   METRICS.transm.median <- median(transm.count) # add
   
   METRICS.transm.sd <- sd(transm.count) # add
-  
+
   
   
   epi.Metrics <- c(METRICS.incidence.df.15.24.int.35.36.men, METRICS.incidence.df.15.24.int.35.36.women,
@@ -427,7 +432,7 @@ complete.master.epic.metrics <- function(datalist = datalist.agemix){
                     "metr.incid.40.49.int.38.39.m", "metr.incid.40.49.int.38.39.w",
                     "metr.incid.40.49.int.39.40.m", "metr.incid.40.49.int.39.40.w",
                     
-                    paste0("metr.",names(METRICS.LMEM.rels.age.mix)), 
+                    paste0("metr.",c("AAD.male", "SDAD.male", "slope.male", "WSD.male", "BSD.male", "intercept.male")), 
                     
                     "metr.transm.av",
                     "metr.transm.med", "metr.transm.sd")

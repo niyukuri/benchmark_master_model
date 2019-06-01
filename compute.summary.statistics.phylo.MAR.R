@@ -17,6 +17,8 @@
 #' @export
 
 
+
+
 # The outputs of the function are:
 
 # (i) Internal node statistics
@@ -43,7 +45,9 @@
 # "ME.cl.av.age.male",  "ME.cl.gendEffect", "ME.cl.between.transm.var", "ME.cl.within.transm.var",  "ME.cl.SD.female",          
 # "ME.cl.SD.male", 
 
-# "Num.Clusters",  "av.Clust.Size",   "mean.Num.Clus",  "med.Num.Clus",   "SD.Num.Clus" ,
+# "Num.Clusters",  - removed
+
+# "av.Clust.Size",   "mean.Num.Clus",  "med.Num.Clus",   "SD.Num.Clus" ,
 
 # "meanHeight",  "colless",  "sackin", "mean.tipsDepths", "mean.nodesDepths", "maxHeight",  
 
@@ -73,9 +77,10 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
   
   
   
-  # source("~/phylosimpact_simulation_studies_2018/stress_testing/needed.functions.RSimpactHelp.R")
+  # source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
   
-  source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
+  source("/home/david/benchmark_master_model/needed.functions.RSimpactHelp.R")
+  
   
   
   dirseqgen <- work.dir
@@ -110,12 +115,12 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     
     mAr.IDs.tree.calib <- phylogenetic.tree.fasttree.par(dir.tree = dirfasttree,
                                                          sub.dir.rename = sub.dir.rename,
-                                                         fasttree.tool = "FastTreeMP",
+                                                         fasttree.tool = "FastTree",
                                                          calendar.dates = "samplingtimes.all.csv",
                                                          simseqfile = paste0("cov.",seq.cov, ".mAr.IDs.C.Epidemic.Fasta"),
                                                          count.start = 1977,
                                                          endsim = endpoint,
-                                                         clust = TRUE)
+                                                         clust = FALSE)
     
     N <- node.age(mAr.IDs.tree.calib)
     
@@ -177,7 +182,7 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     
     # run ClusterPicker
     
-    system(paste("java -jar ", paste(paste0(work.dir,"/ClusterPicker_1.2.3.jar"), paste0(sub.dir.rename,"/", paste0("cov.",seq.cov, ".mAr.IDs.C.Epidemic.Fasta")), paste0(sub.dir.rename,"/",paste0("cov.",seq.cov, ".mAr.IDs.C.Epidemic.Fasta.nwk")),  paste0("0.9 0.9 0.045 2 gap"))))
+    system(paste("java -jar ", paste(paste0(work.dir,"/ClusterPicker_1.2.3.jar"), paste0(sub.dir.rename,"/", paste0("cov.",seq.cov, ".mAr.IDs.C.Epidemic.Fasta")), paste0(sub.dir.rename,"/",paste0("cov.",seq.cov, ".mAr.IDs.C.Epidemic.Fasta.nwk")),  paste0("0.8 0.7 0.045 2 gap"))))
     
     # Read clusters' files
     
@@ -364,17 +369,20 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
         med.Num.Clus <- median(clust.size)
         SD.Num.Clus <- sd(clust.size)
         
-        ouptuvector.clust <- c(clust.lme.val, Num.Clus, av.Clust.size, mean.Num.Clus, med.Num.Clus, SD.Num.Clus)
+        ouptuvector.clust <- c(clust.lme.val, 
+                               # Num.Clus, 
+                               av.Clust.size, mean.Num.Clus, med.Num.Clus, SD.Num.Clus)
         
         names(ouptuvector.clust) <- c("ME.cl.av.age.male", "ME.cl.gendEffect", "ME.cl.between.transm.var", "ME.cl.within.transm.var", "ME.cl.SD.female", "ME.cl.SD.male", 
-                                      "Num.Clusters", "av.Clust.Size", "mean.Cl.size", "med.Cl.size", "SD.Cl.size")
+                                      # "Num.Clusters", 
+                                      "av.Clust.Size", "mean.Cl.size", "med.Cl.size", "SD.Cl.size")
         
       }else{
         
-        ouptuvector.clust <- c(clust.lme.val, Num.Clus, av.Clust.size)
         
         clust.stat.names <-  c("ME.cl.av.age.male", "ME.cl.gendEffect", "ME.cl.between.transm.var", "ME.cl.within.transm.var", "ME.cl.SD.female", "ME.cl.SD.male", 
-                               "Num.Clusters", "av.Clust.Size", "mean.Cl.size", "med.Cl.size", "SD.Cl.size")
+                               # "Num.Clusters", 
+                               "av.Clust.Size", "mean.Cl.size", "med.Cl.size", "SD.Cl.size")
         
         ouptuvector.clust <- rep(NA, length(clust.stat.names))
         
@@ -392,11 +400,6 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
                                                                simpact.trans.net = simpact.trans.net,
                                                                limitTransmEvents = limitTransmEvents,
                                                                select.IDs = mAr.IDs)
-    
-    
-    # source("~/phylosimpact_simulation_studies_2018/stress_testing/stress_testing_final/stats.age.groups.trans.clust.network.fun.R")
-    
-    
     
     
     
@@ -417,11 +420,10 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
       
       
       
-      
-      source("~/phylosimpact_simulation_studies_2018/stress_testing/needed.functions.RSimpactHelp.R")
-      
-      
       # source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
+      
+      source("/home/david/benchmark_master_model/needed.functions.RSimpactHelp.R") 
+      
       
       
       # Data list of infected individuals
@@ -1705,7 +1707,7 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
     
   }else{
     
-    clust.phylo.fit.params <- rep(NA, 37)
+    clust.phylo.fit.params <- rep(NA, 36)
     
     names(clust.phylo.fit.params) <- c("node.interc.fit",
                                        "node.slope.fit",
@@ -1713,7 +1715,9 @@ compute.summary.statistics.phylo.MAR <- function(simpact.trans.net = simpact.tra
                                        "ME.cl.av.age.male",  "ME.cl.gendEffect", "ME.cl.between.transm.var", "ME.cl.within.transm.var",  "ME.cl.SD.female",          
                                        "ME.cl.SD.male", 
                                        
-                                       "Num.Clusters",  "av.Clust.Size",   "mean.Num.Clus",  "med.Num.Clus",   "SD.Num.Clus" , 
+                                       # "Num.Clusters",  
+                                       
+                                       "av.Clust.Size",   "mean.Num.Clus",  "med.Num.Clus",   "SD.Num.Clus" , 
                                        "meanHeight",  "colless",  "sackin", "mean.tipsDepths", "mean.nodesDepths", "maxHeight",  
                                        
                                        "cl.prop.men15.25.F.15.25",   "cl.prop.men25.40.F.15.25", "cl.prop.men40.50.F.15.25", "cl.prop.men15.25.F.25.40",   

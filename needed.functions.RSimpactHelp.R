@@ -324,7 +324,6 @@ fit.agemix.trans.women <- function(datatable = agemix.df){
 
 onwardtransmissions.dat <- function(datalist = datalist, 
                                     trans.network = trans.network,
-                                    limitTransmEvents = 3,
                                     time.window=c(10,40)){
   
   
@@ -492,6 +491,113 @@ colMedians <- function(matrixdata){
   
   return(med.vector)
   
+}
+
+
+
+concurr.pointprev.calculator <- function(datalist = datalist,
+                                         timepoint = datalist$itable$population.simtime[1] - 0.5){
+  
+  #  output <- data.table()
+  
+  DTalive.infected <- alive.infected(datalist = datalist,
+                                     timepoint = timepoint, site = "All") # First we only take the data of people who were alive at time_i
+  
+  agemix.df <- agemix.df.maker(datalist)
+  
+  degrees.df <- degree.df.maker(df = agemix.df,
+                                agegroup = c(15, 50),
+                                hivstatus = 2,
+                                survey.time = 40, # timepoint,
+                                window.width = 1,
+                                gender.degree = "male",
+                                only.new = FALSE)
+  
+  number.people.with.cps <- sum(degrees.df$Degree > 1)
+  popsize <- nrow(DTalive.infected)
+  concurr.pointprevalence <- number.people.with.cps / popsize
+  
+  return(concurr.pointprevalence)
+}
+
+
+VL.suppression.calculator <- function(datalist = datalist,
+                                    agegroup = c(15, 30),
+                                    timepoint = 30,
+                                    vl.cutoff = 1000,
+                                    site = "All"){
+
+  # First we only take the data of people who were alive at the timepoint
+
+  DTalive.infected <- alive.infected(datalist = datalist,
+                                     timepoint = timepoint,
+                                     site = site)
+
+  DTalive.infected <- DTalive.infected %>%
+    dplyr::filter(Infected==TRUE)
+
+
+  #Limit the list to those who match the age group.
+  DTalive.infected.agegroup <- DTalive.infected %>%
+    dplyr::filter(TOB <= timepoint - agegroup[1] &
+                    TOB > timepoint - agegroup[2])
+
+  raw.df <- data.frame(DTalive.infected.agegroup)
+
+  vl.df <- datalist$vltable %>%    # a dataframe with the most recent VL for each person.
+    dplyr::select(c(Time, ID, Log10VL)) %>%
+    dplyr::filter(Time <= timepoint) %>%
+    dplyr::group_by(ID) %>%
+    dplyr::arrange(Time) %>%
+    dplyr::slice(n())
+
+  # Now we apply the left_join dplyr function to add the VL status to raw.df.
+  raw.df <- dplyr::left_join(x = raw.df, y = vl.df, by = "ID")
+
+  if (nrow(raw.df) > 0 & sum(raw.df$Infected)>0) {
+    #Now we apply some dplyr function to get the sum of cases and population size per gender.
+    raw.df$Gender <- as.character(raw.df$Gender)
+    raw.df <- mutate(raw.df,
+                     vl.suppr = Log10VL < log10(vl.cutoff))
+
+
+    VL.suppression.df <- dplyr::summarise(dplyr::group_by(raw.df, Gender),
+                                        popsize = length(Gender),
+                                        sum.cases = sum(Infected),
+                                        sum.vl.suppr = sum(vl.suppr),
+                                        vl.suppr.frac = sum(vl.suppr) / sum(Infected),
+                                        vl.suppr.frac.95.ll = as.numeric(
+                                          binom.test(x=sum(vl.suppr),n=sum(Infected))$conf.int)[1],
+                                        vl.suppr.frac.95.ul = as.numeric(
+                                          binom.test(x=sum(vl.suppr),n=sum(Infected))$conf.int)[2]
+    )
+
+    VL.suppression.all.df <- raw.df %>%
+      dplyr::summarise(Gender = NA, # Create column for gender
+                       popsize = n(),
+                       sum.cases = sum(Infected),
+                       sum.vl.suppr = sum(vl.suppr),
+                       vl.suppr.frac = sum(vl.suppr) / sum(Infected),
+                       vl.suppr.frac.95.ll = as.numeric(
+                         binom.test(x=sum(vl.suppr),n=sum(Infected))$conf.int)[1],
+                       vl.suppr.frac.95.ul = as.numeric(
+                         binom.test(x=sum(vl.suppr),n=sum(Infected))$conf.int)[2])
+
+    # Combine stratified, and overall prev
+    VL.suppression.df <- bind_rows(VL.suppression.df, VL.suppression.all.df) %>%
+      ungroup()
+
+  } else {
+    VL.suppression.df <- data.frame(Gender = rep(NA, 3),
+                                  popsize = rep(NA, 3),
+                                  sum.cases = rep(NA, 3),
+                                  sum.vl.suppr = rep(NA, 3),
+                                  vl.suppr.frac = rep(NA, 3),
+                                  vl.suppr.frac.95.ll = rep(NA, 3),
+                                  vl.suppr.frac.95.ul = rep(NA, 3)
+    )
+  }
+  return(VL.suppression.df)
 }
 
 

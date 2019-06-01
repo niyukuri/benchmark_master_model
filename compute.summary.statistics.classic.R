@@ -53,10 +53,9 @@ compute.summary.statistics.classic <- function(datalist = datalist.agemix,
                                                timewindow = c(30, 40)){
   
   
+  # source("/home/dniyukuri/lustre/calibration_classic/needed.functions.RSimpactHelp.R")
   
-  # source("~/phylosimpact_simulation_studies_2018/stress_testing/needed.functions.RSimpactHelp.R")
-  
-  source("/home/dniyukuri/lustre/benchmark_master_model/needed.functions.RSimpactHelp.R")
+  source("/home/david/benchmark_master_model/needed.functions.RSimpactHelp.R")
   
   
   datalist.agemix <- datalist
@@ -82,42 +81,42 @@ compute.summary.statistics.classic <- function(datalist = datalist.agemix,
   
   hiv.prev.lt25.women <- prevalence.calculator(datalist = datalist.agemix,
                                                agegroup = c(15, 25),
-                                               timepoint = 40) %>%
+                                               timepoint = timewindow[2]) %>%
     dplyr::select(pointprevalence) %>%
     dplyr::slice(2) %>%
     as.numeric()
   
   hiv.prev.lt25.men <- prevalence.calculator(datalist = datalist.agemix,
                                              agegroup = c(15, 25),
-                                             timepoint = 40) %>%
+                                             timepoint = timewindow[2]) %>%
     dplyr::select(pointprevalence) %>%
     dplyr::slice(1) %>%
     as.numeric()
   
   hiv.prev.25.40.women <- prevalence.calculator(datalist = datalist.agemix,
                                                 agegroup = c(25, 40),
-                                                timepoint = 40) %>%
+                                                timepoint = timewindow[2]) %>%
     dplyr::select(pointprevalence) %>%
     dplyr::slice(2) %>%
     as.numeric()
   
   hiv.prev.25.40.men <- prevalence.calculator(datalist = datalist.agemix,
                                               agegroup = c(25, 40),
-                                              timepoint = 40) %>%
+                                              timepoint = timewindow[2]) %>%
     dplyr::select(pointprevalence) %>%
     dplyr::slice(1) %>%
     as.numeric()
   
   hiv.prev.40.50.women <- prevalence.calculator(datalist = datalist.agemix,
                                                 agegroup = c(40, 50),
-                                                timepoint = 40) %>%
+                                                timepoint = timewindow[2]) %>%
     dplyr::select(pointprevalence) %>%
     dplyr::slice(2) %>%
     as.numeric()
   
   hiv.prev.40.50.men <- prevalence.calculator(datalist = datalist.agemix,
                                               agegroup = c(40, 50),
-                                              timepoint = 40) %>%
+                                              timepoint = timewindow[2]) %>%
     dplyr::select(pointprevalence) %>%
     dplyr::slice(1) %>%
     as.numeric()
@@ -196,13 +195,13 @@ compute.summary.statistics.classic <- function(datalist = datalist.agemix,
   
   
   # pp.cp.6months.male.rels <- concurr.pointprev.calculator(datalist = datalist.agemix,
-  #                                                         timepoint = 40 - 0.5) %>%
+  #                                                         timepoint = timewindow[2] - 0.5) %>%
   #   dplyr::select(concurr.pointprev) %>%
   #   dplyr::slice(1) %>%
   #   as.numeric()
   # 
   # pp.cp.6months.female.rels <- concurr.pointprev.calculator(datalist = datalist.agemix,
-  #                                                           timepoint = 40 - 0.5) %>%
+  #                                                           timepoint = timewindow[2] - 0.5) %>%
   #   dplyr::select(concurr.pointprev) %>%
   #   dplyr::slice(2) %>%
   #   as.numeric()
@@ -247,7 +246,7 @@ compute.summary.statistics.classic <- function(datalist = datalist.agemix,
   ####
   VL.suppression.fraction <- VL.suppression.calculator(datalist = datalist.agemix,
                                                        agegroup = c(15, 50),
-                                                       timepoint = 40,
+                                                       timepoint = timewindow[2],
                                                        vl.cutoff = 1000,
                                                        site="All") %>%
     dplyr::select(vl.suppr.frac) %>%
@@ -296,6 +295,7 @@ compute.summary.statistics.classic <- function(datalist = datalist.agemix,
   
   names(classic.features) <- classic.features.names 
   
+  # classic.features.num <- as.numeric(classic.features)
   
   return(classic.features)
   
